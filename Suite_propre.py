@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import sys
 from IPython.display import display
 
+def verif(bias,n):
+    for k in bias:
+        if k.shape != (n,1):
+            raise ValueError("Le biais n'est pas de la bonne dimension")
 
 ###### Task 1: Define the function ######
 
@@ -132,6 +136,7 @@ def ANN(x, NpL, Nfx, Wts, bias, ActivFun):
         yLm1 = yL
     return y,z
 
+
 ###### Task 5: Read data ######
 
 df = pd.read_excel("abalone_data.xlsx", sheet_name="Sheet1")
@@ -201,7 +206,7 @@ def ANN_backpro(x, ytrue, NpL, Nfx, Wts, bias, ActivFun, lr):
     '''
     print("x",x.shape)
     print("ytrue",ytrue.shape)
-
+    
     ## step 1: feed forward
     n = x.shape[1]
     yLm1 = x
@@ -273,13 +278,17 @@ def ANN_backpro(x, ytrue, NpL, Nfx, Wts, bias, ActivFun, lr):
         print("WL",WL.shape, "nL x nL-1")
         print("dJ_dz",dJ_dz.shape, "nL x n")
         print("dJ_dy",dJ_dy.shape, "nL-1 x n")
-
+        print("dJ_dW",dJ_dW.shape, "nL x nL-1")
+        print("bL",bL.shape, "nL x 1","avant")
         ## Updating the parameters
-        WL = WL - lr * dJ_dW
-        bL = bL - lr * dJ_db
+        print(type(np.multiply(dJ_db,lr)))
+
+        WL = WL - np.multiply(dJ_dW,lr)
+        bL = bL - np.multiply(dJ_db,lr).T
+        print("WL",WL.shape, "nL x nL-1")
+        print("bL",bL.shape, "nL x 1","apres")
         Wts[iL] = WL
         bias[iL] = bL
-
     return Wts, bias
 
 
@@ -305,7 +314,7 @@ print("Number of neurons from the previous layer: ", NpLm1)
 lr = 0.001
 
 ## Number of epochs
-epochs = 5000
+epochs = 500
 
 ## List of weights and biases
 Wts = []
@@ -341,15 +350,18 @@ for iepoch in np.arange(epochs):
     print("x_in",x_in.shape)
     yout, zout = ANN(x = x_in, NpL = NpL, Nfx = Nfx, Wts = Wts, bias = bias, ActivFun = ActivFun)
     ytrainsim = yout
+    print(yout)
     ntrain = ytrain.shape[0]
-    Error_train = np.dot((ytrain - ytrainsim).T,(ytrain - ytrainsim))/ntrain
+    print("ytrainsim",len(ytrainsim))
+    print("ytrain",ytrain.shape)
+    Error_train = np.dot((ytrain - ytrainsim[0]).T,(ytrain - ytrainsim[0]))/ntrain
     
     ## estimate the MSE for the test dataset
     x_in = xtest_scl.T
     yout, zout = ANN(x = x_in, NpL = NpL, Nfx = Nfx, Wts = Wts, bias = bias, ActivFun = ActivFun)
     ytestsim = yout
     ntest = ytest.shape[0]
-    Error_test = np.dot((ytest - ytestsim).T,(ytest - ytestsim))/ntest
+    Error_test = np.dot((ytest - ytestsim[0]).T,(ytest - ytestsim[0]))/ntest
    
     ## keeping track of the errors
     MSEtrain = np.append(MSEtrain, Error_train[0,0])
@@ -360,6 +372,25 @@ for iepoch in np.arange(epochs):
                     + str(int(epochs)).rjust(5,'0') + " " +
                     "Training error: " + str(round(Error_train[0,0],2)) + 
                     "  Test error: " + str(round(Error_test[0,0],2)))
+
+## plot the evolution of the errors
+
+## initialization of the plot
+plt.grid(color='black', axis='y', linestyle='-', linewidth=0.5)    
+plt.grid(color='black', axis='x', linestyle='-', linewidth=0.5)   
+plt.grid(which='minor',color='grey', axis='x', linestyle=':', linewidth=0.5)     
+plt.grid(which='minor',color='grey', axis='y', linestyle=':', linewidth=0.5)    
+plt.xticks(fontsize=16); plt.yticks(fontsize=16)   
+plt.xlabel('epoch',fontsize=16 )
+plt.ylabel(r'$RMSE_{train}$ (yr), $RMSE_{test}$ (yr)', size = 16)
+## plotting the data
+plt.plot(epoch, MSEtrain**0.5, color = "blue", linewidth = 2., label = "Training error")
+plt.plot(epoch, MSEtest**0.5, color = "orange", linewidth = 2., label = "Test error")
+plt.title("Prediction error", fontsize = 16)
+plt.gcf().set_size_inches(10, 5)
+plt.legend(loc="upper right", prop={'size': 15})
+plt.savefig("fig01.png", dpi = 300,  bbox_inches='tight')
+plt.show()
 
 
        
