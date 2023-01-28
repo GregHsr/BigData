@@ -1,0 +1,78 @@
+##---------------- FOR EVERYONE
+## INSTALL A PYTHON VERSION THAT IS EITHER 3.8.X OR 3.9.X OR 3.10.X
+## To check which python version you have, run py --version (in windows) or python --version (Linux)
+
+## For Windows ----------------------------------
+## Open a command prompt (invite de commandes) and execute the following
+
+## STEP 1 (one time): create a folder of your own, where you can store your code.
+## Let us imagine that your folder is at C:\Users\toto\Documents\N7_BigData
+mkdir C:\Users\toto\Documents\N7_BigData
+cd C:\Users\toto\Documents\N7_BigData
+
+## STEP 2 (one time): download the Jupyter notebook "2022_ANN_Exercise_NOM_PRENOM.ipynb" and store it in the created folder
+
+
+## STEP 3 (one time): make sure you have pip installed
+py -m pip install --upgrade pip
+py -m pip --version
+
+## STEP 4 (one time): create an environment "tp_ann"
+py -m venv tp_ann
+
+## STEP 5 (everytime): ativate the environment "tp_ann"
+.\tp_ann\Scripts\activate
+
+## STEP 6 (one time): install all required libraries
+pip install --upgrade tensorflow==2.8.4 Matplotlib plotly Pandas Pandoc Jupyterlab openpyxl barviz
+
+## STEP 7 (everytime): launch JupyterLab
+jupyter lab
+
+
+## For Linux ----------------------------------
+
+## STEP 1 (one time): create a folder of your own, where you can store your code.
+## Let us imagine that your folder is at /home/toto/N7_BigData
+mkdir /home/toto/N7_BigData
+cd /home/toto/N7_BigData
+
+## STEP 2 (one time): download the Jupyter notebook "2022_ANN_Exercise_NOM_PRENOM.ipynb" and store it in the created folder
+
+## STEP 3 (one time): install pip
+apt-get install python3-pip python3-venv
+
+## STEP 4 (one time): create an environment "tp_ann"
+python -m venv --system-site-packages tp_ann
+
+## STEP 5 (everytime): activate the environment "tp_ann"
+source ./tp_ann/bin/activate
+
+## STEP 6 (one time): install all required libraries
+pip install --upgrade tensorflow==2.8.4 Matplotlib plotly Pandas Pandoc Jupyterlab openpyxl barviz
+
+## STEP 7 (everytime): launch JupyterLab
+jupyter lab
+
+
+## For MacOS (not tested)--------------------------
+## STEP 1: install pip
+sudo easy_install pip
+
+## STEP 2: install virtualenv
+sudo -H pip install virtualenv
+
+## STEP 3: go to your preferred folder and create a folder for your code
+mkdir N7_BigData && cd N7_BigData
+
+## STEP 4: create your environment
+virtualenv tp_ann
+
+## STEP 5: activate your environment
+source tp_ann/bin/activate
+
+## STEP 6: install tensorflow and other packages
+python3 -m pip install tensorflow==2.8.4 Matplotlib plotly Pandas Pandoc Jupyterlab openpyxl barviz
+
+## STEP 7: launch jupyter lab
+jupyter lab
