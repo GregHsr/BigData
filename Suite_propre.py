@@ -314,7 +314,7 @@ print("Number of neurons from the previous layer: ", NpLm1)
 lr = 0.001
 
 ## Number of epochs
-epochs = 500
+epochs = 10
 
 ## List of weights and biases
 Wts = []
@@ -392,6 +392,25 @@ plt.legend(loc="upper right", prop={'size': 15})
 plt.savefig("fig01.png", dpi = 300,  bbox_inches='tight')
 plt.show()
 
+####### Task 12: Use optimized parameters #######
 
-       
-        
+## Showing the results for the test dataset
+x_in = xtest_scl.T
+yout, zout = ANN(x = x_in, NpL = NpL, Nfx = Nfx, Wts = Wts, bias = bias, ActivFun = ActivFun)
+ytestsim = yout
+Error_test = np.dot((ytest - ytestsim[0]).T,(ytest - ytestsim[0]))/ntest
+## Making a scatter plot
+## initialization of the plot
+plt.grid(color='black', axis='y', linestyle='-', linewidth=0.5)    
+plt.grid(color='black', axis='x', linestyle='-', linewidth=0.5)   
+plt.grid(which='minor',color='grey', axis='x', linestyle=':', linewidth=0.5)     
+plt.grid(which='minor',color='grey', axis='y', linestyle=':', linewidth=0.5)    
+plt.xticks(fontsize=16); plt.yticks(fontsize=16)   
+plt.xlabel(r'$Age_{obs}$ (yr)',fontsize=16 )
+plt.ylabel(r'$Age_{sim}$ (yr)',fontsize=16 )
+## plotting the data
+plt.scatter(ytest, ytestsim, color = "red", marker = "o")
+plt.plot([0., 30.], [0., 30.], color='k', linestyle='-', linewidth=2)
+plt.gcf().set_size_inches(6, 6)
+plt.savefig("fig02.png", dpi = 300,  bbox_inches='tight')
+plt.show()
